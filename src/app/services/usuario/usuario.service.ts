@@ -4,16 +4,45 @@ import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { map } from 'rxjs/operators';
 import * as swal from 'sweetalert';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
+  token: string;
+  usuario: Usuario; 
+  
   constructor(
-    public http: HttpClient
-  ) {
-    console.log('Servicio de usuario listo');
+    public http: HttpClient,
+    public router: Router
+    ) {
+      this.cargarStorage();
+      console.log('Servicio de usuario listo');
+  }
+
+  estaLogueado() {
+    return ( this.token.length > 5) ? true : false;
+  }
+
+  cargarStorage() {
+    if(localStorage.getItem('token')){
+      this.token = localStorage.getItem('token');
+      this.usuario = JSON.parse( localStorage.getItem('usuario') );
+    } else {
+      this.token = '';
+      this.usuario = null;
+    }
+  }
+
+  guardarStorage( id: string, token: string, usuario: Usuario ) {
+    localStorage.setItem('id', id);
+    localStorage.setItem('token', token);
+    localStorage.setItem('usuario', JSON.stringify(usuario));
+
+    this.token = token;
+    this.usuario = usuario;
   }
 
   crearUsuario( usuario: Usuario ) {
@@ -36,17 +65,25 @@ export class UsuarioService {
       localStorage.removeItem('email');
     }
 
-    console.log('login');
     let url = URL_SERVICIOS + '/login';
-    console.log(url);
     return this.http.post( url, usuario)
     .pipe(
       map( (resp: any) => {
-        localStorage.setItem('id', resp.id);
-        localStorage.setItem('token', resp.token);
-        localStorage.setItem('usuario', JSON.stringify(resp.usuario));
+        this.guardarStorage(resp.id, resp.token, resp.usuario);
         return true;
       })
     );
   }
+
+  logout() {
+    this.token = '';
+    this.usuario = null;
+
+    localStorage.removeItem('id');
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+
+    this.router.navigate(['/login']);
+  }
+
 }
