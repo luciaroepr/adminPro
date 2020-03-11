@@ -51,8 +51,23 @@ export class UsuarioService {
     return this.http.post( url, usuario)
     .pipe(
       map( (resp: any) => {
-        swal('Usuario creado', usuario.email, 'success' );
+        // swal('Usuario creado', usuario.email, 'success' );
         return resp.usuario;
+      })
+    );
+  }
+
+  actualizarUsuario( usuario: Usuario ) {
+    let url = URL_SERVICIOS + '/usuario/' + usuario._id;
+    url    += '?token=' + this.token;
+    return this.http.put( url, usuario)
+    .pipe(
+      map( (resp: any) => {
+        let usuarioBD : Usuario = resp.usuario;
+
+        this.guardarStorage( usuarioBD._id, this.token, usuarioBD);
+        swal('Usuario actualizado', usuarioBD.nombre, 'success' );
+        return resp.true;
       })
     );
   }
