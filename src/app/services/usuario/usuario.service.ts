@@ -14,7 +14,7 @@ export class UsuarioService {
 
   token: string;
   usuario: Usuario; 
-  
+
   constructor(
     public http: HttpClient,
     public router: Router,
@@ -29,7 +29,7 @@ export class UsuarioService {
   }
 
   cargarStorage() {
-    if(localStorage.getItem('token')){
+    if (localStorage.getItem('token')){
       this.token = localStorage.getItem('token');
       this.usuario = JSON.parse( localStorage.getItem('usuario') );
     } else {
@@ -68,7 +68,7 @@ export class UsuarioService {
         let usuarioBD : Usuario = resp.usuario;
 
         this.guardarStorage( usuarioBD._id, this.token, usuarioBD);
-        swal('Usuario actualizado', usuarioBD.nombre, 'success' );
+        // swal('Usuario actualizado', usuarioBD.nombre, 'success' );
         return resp.true;
       })
     );
@@ -78,7 +78,7 @@ export class UsuarioService {
     this._subirArchivo.subirArchivo( archivo, 'usuarios', id)
       .then( (resp: any) => {
         this.usuario.img  = resp.usuario.img;
-        swal( 'Imagen actualizada ', this.usuario.nombre, 'success');
+        // swal( 'Imagen actualizada ', this.usuario.nombre, 'success');
 
         this.guardarStorage( id, this.token, this.usuario);
       })
@@ -114,6 +114,27 @@ export class UsuarioService {
     localStorage.removeItem('usuario');
 
     this.router.navigate(['/login']);
+  }
+
+  cargarUsuarios(desde: number = 0) {
+    let url = URL_SERVICIOS + '/usuario?desde=' + desde;
+    return this.http.get( url);
+  }
+
+  buscarUsuario( termino: string ) {
+    let url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
+    return this.http.get( url);
+  }
+
+  borrarUsuario( id: string ) {
+    let url = URL_SERVICIOS + '/usuario/' + id + '?token=' + this.token;
+    return this.http.delete( url)
+    .pipe(
+      map( (resp: any) => {
+        swal('Usuario borrado', 'Se ha borrado el usuario ' + resp.usuario.nombre, 'success');
+        return true;
+      })
+    );
   }
 
 }

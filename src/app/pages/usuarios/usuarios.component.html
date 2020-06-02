@@ -1,0 +1,71 @@
+<div class="row animated fadeIn">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <input #input (keyup)="buscarUsuario(input.value)" type="text" class="form-control" placeholder="Buscar Usuario">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="cargando">
+    <div class="col-sm-12">
+        <div class="alet alert-warning text-center">
+            <strong>Cargando...</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+
+</div>
+
+<div class="row animated fadeIn mt-5" *ngIf="!cargando">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Usuarios registrados ( <small>{{ totalRegistros }}</small> )</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Correo</th>
+                            <th>Nombre</th>
+                            <th>Role</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let usuario of usuarios">
+                            <td class="w70">
+                                <img class="img-50 img-circle" [src]="usuario.img | imagen">
+                            </td>
+                            <td>
+                                {{ usuario.email }}
+                            </td>
+                            <td>
+                                {{ usuario.nombre }}
+                            </td>
+                            <td>
+                                {{ usuario.role }}
+                            </td>
+                            <td>
+                                <button class="btn btn-primary">
+                                    <i class="fa fa-save"></i>
+                                </button>
+                                <button (click)="borrarUsuario( usuario )" class="btn btn-danger ml-1">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+                <button (click)="cambiarDesde(-5)" class="btn btn-secondary"> Anteriores</button>
+                <button (click)="cambiarDesde(5);" class="btn btn-secondary ml-1"> Siguientes</button>
+                <span> {{ desde }}</span>
+            </div>
+        </div>
+    </div>
+</div>
