@@ -96,6 +96,7 @@ export class UsuarioService {
     }
 
     let url = URL_SERVICIOS + '/login';
+    console.log(url, 'login');
     return this.http.post( url, usuario)
     .pipe(
       map( (resp: any) => {
@@ -131,7 +132,8 @@ export class UsuarioService {
     return this.http.delete( url)
     .pipe(
       map( (resp: any) => {
-        swal('Usuario borrado', 'Se ha borrado el usuario ' + resp.usuario.nombre, 'success');
+        console.log('Se ha borrado el usuario');
+        // swal('Usuario borrado', 'Se ha borrado el usuario ' + resp.usuario.nombre, 'success');
         return true;
       })
     );
