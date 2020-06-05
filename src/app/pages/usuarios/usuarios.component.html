@@ -40,7 +40,7 @@
                     <tbody>
                         <tr *ngFor="let usuario of usuarios">
                             <td class="w70">
-                                <img class="img-50 img-circle" [src]="usuario.img | imagen">
+                                <img class="img-50 img-circle pointer" (click)=" _modalUploadService.abrirModal( 'usuarios', usuario._id) " [src]="usuario.img | imagen ">
                             </td>
                             <td>
                                 {{ usuario.email }}
@@ -52,19 +52,19 @@
                                 {{ usuario.role }}
                             </td>
                             <td>
-                                <button class="btn btn-primary">
-                                    <i class="fa fa-save"></i>
+                                <button class="btn btn-primary ">
+                                    <i class="fa fa-save "></i>
                                 </button>
-                                <button (click)="borrarUsuario( usuario )" class="btn btn-danger ml-1">
-                                    <i class="fa fa-trash-o"></i>
+                                <button (click)="borrarUsuario( usuario ) " class="btn btn-danger ml-1 ">
+                                    <i class="fa fa-trash-o "></i>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
 
                 </table>
-                <button (click)="cambiarDesde(-5)" class="btn btn-secondary"> Anteriores</button>
-                <button (click)="cambiarDesde(5);" class="btn btn-secondary ml-1"> Siguientes</button>
+                <button (click)="cambiarDesde(-5) " class="btn btn-secondary "> Anteriores</button>
+                <button (click)="cambiarDesde(5); " class="btn btn-secondary ml-1 "> Siguientes</button>
                 <span> {{ desde }}</span>
             </div>
         </div>
