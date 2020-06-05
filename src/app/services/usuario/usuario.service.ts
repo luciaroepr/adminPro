@@ -13,7 +13,7 @@ import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 export class UsuarioService {
 
   token: string;
-  usuario: Usuario; 
+  usuario: Usuario;
 
   constructor(
     public http: HttpClient,
