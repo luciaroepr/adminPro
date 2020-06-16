@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Hospital } from '../../models/hospital.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
-import * as swal from 'sweetalert';
-import { URL_SERVICIOS } from 'src/app/config/config';
-import { UsuarioService } from '../service.index';
 import { map } from 'rxjs/operators';
+import * as swal from 'sweetalert';
+
+import { URL_SERVICIOS } from 'src/app/config/config';
+import { Hospital } from '../../models/hospital.model';
+import { UsuarioService } from '../usuario/usuario.service';
+
+// declare var swal: any;
 
 @Injectable({
   providedIn: 'root'
@@ -35,9 +37,9 @@ export class HospitalService {
     return this.http.delete(url)
     .pipe(
       map(
-        (resp:any) => {
+        (resp: any) => {
           console.log('Hospital borrado');
-          swal('Hospital borrado', 'Se ha borrado el hospital ' + resp.hospital.nombre, 'success');
+          // swal('Hospital borrado', 'Se ha borrado el hospital ' + resp.hospital.nombre, 'success');
           return true;
         }
       )
@@ -61,7 +63,7 @@ export class HospitalService {
     return this.http.put( url, hospital)
     .pipe(
       map( (resp: any) => {
-        // swal('Hospital actualizado', hospitalBD.nombre, 'success' );
+        // swal('Hospital actualizado', resp.hospital.nombre, 'success' );
         return resp.hospital;
       })
     );

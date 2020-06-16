@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { HospitalService } from 'src/app/services/service.index';
 import { Hospital } from 'src/app/models/hospital.model';
 import { ModalUploadService } from 'src/app/components/modal-upload/modal-upload.service';
-import * as swal from 'sweetalert';
+// import * as swal from 'sweetalert';
+declare var swal: any;
+
 @Component({
   templateUrl: './hospitales.component.html',
   styles: []
 })
+
+
 export class HospitalesComponent implements OnInit {
 
   cargando: boolean = false;
@@ -44,7 +48,7 @@ export class HospitalesComponent implements OnInit {
       this.cargarHospitales();
       return;
     }
-    
+
     this.cargando = true;
     this._hospitalService.buscarHospital( termino )
       .subscribe( (resp : any) => {
@@ -57,27 +61,26 @@ export class HospitalesComponent implements OnInit {
 
   crearHospital() {
     console.log('Crear hospital');
-    swal("Nombre del Hospital:", {
-      content: "input",
+    swal({
+      title: 'Crear hospital',
+      content: 'input',
+      text: 'Ingrese el nombre del hospital',
+      icon: 'info',
+      button: true,
+      dangerMode: true
     })
-    .then((value) => {
-      if ( value ) {
-        this._hospitalService.crearHospital( value )
-        .subscribe((resp: any) => {
-          swal(`Hospital creado: ${resp.hospital.nombre}`);
-          this.cargarHospitales();
-        });
-        
-      }else {
+    .then( (value: string ) => {
+      if ( !value || value.length === 0 ) {
         swal(`Error creando hospital: ${value}`);
       }
-      
+
+      this._hospitalService.crearHospital( value )
+      .subscribe((resp: any) => {
+        swal(`Hospital creado: ${resp.hospital.nombre}`);
+        this.hospitales.push( resp.hospital );
+        // this.cargarHospitales();
+      });
     });
-  
-  }
-
-  guardarHospital( hospital: Hospital) {
-
   }
 
   borrarHospital( hospital: Hospital ) {
@@ -87,7 +90,7 @@ export class HospitalesComponent implements OnInit {
       text: 'Esta a punto de borrar a ' + hospital.nombre,
       icon: 'warning',
       buttons: true,
-      dangetMode: true,
+      dangerMode: true,
     })
     .then( borrar => {
       console.log(borrar);
@@ -122,5 +125,10 @@ export class HospitalesComponent implements OnInit {
     }
     this.desde += valor;
     this.cargarHospitales();
+  }
+
+  guardarHospital( hospital ) {
+    this._hospitalService.actualizarHospital( hospital )
+    .subscribe();
   }
 }

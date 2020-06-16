@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../models/usuario.model';
 import { UsuarioService } from '../../services/service.index';
-import * as swal from 'sweetalert';
+// import * as swal from 'sweetalert';
 import { ModalUploadService } from 'src/app/components/modal-upload/modal-upload.service';
 
+declare var swal: any;
 
 @Component({
   selector: 'app-usuarios',

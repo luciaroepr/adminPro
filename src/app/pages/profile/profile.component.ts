@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/service.index';
 import { Usuario } from 'src/app/models/usuario.model';
 
+declare var swal: any;
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -31,7 +33,7 @@ export class ProfileComponent implements OnInit {
     this._usuarioService.actualizarUsuario( this.usuario ).subscribe();
   }
 
-  seleccionImage( archivo: File ) {
+  seleccionImagen( archivo: File ) {
 
     if ( !archivo ) {
       this.imagenSubir = null;
