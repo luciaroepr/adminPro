@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MedicoService } from '../../services/medico/medico.service';
 import { Medico } from 'src/app/models/medico.model';
 
-import * as swal from 'sweetalert';
+import swal from 'sweetalert';
 @Component({
   selector: 'app-medicos',
   templateUrl: './medicos.component.html',
@@ -56,14 +56,12 @@ export class MedicosComponent implements OnInit {
       title: '¿Está seguro?',
       text: 'Esta a punto de borrar a ' + medico.nombre,
       icon: 'warning',
-      buttons: true,
       dangerMode: true
     }).then( borrar => {
       if ( borrar ) {
         console.log('BORRAR AL MEDICO', medico._id);
         this._medicoService.borrarMedico( medico._id ).subscribe( (resp) => this.cargarMedicos());
-      }
-      
+      }      
     });
   }
 }

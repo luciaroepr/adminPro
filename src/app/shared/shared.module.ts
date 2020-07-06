@@ -17,14 +17,12 @@ import { PipesModule } from '../pipes/pipes.module';
         PipesModule
     ],
     declarations: [
-        NopagefoundComponent,
         HeaderComponent,
         SidebarComponent,
         BreadcrumbsComponent,
         NopagefoundComponent
     ],
     exports: [
-        NopagefoundComponent,
         HeaderComponent,
         SidebarComponent,
         BreadcrumbsComponent,

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
-import * as swal from 'sweetalert';
+import swal from 'sweetalert';
 
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { UsuarioService } from '../usuario/usuario.service';
@@ -57,7 +57,41 @@ export class MedicoService {
 
   public guardarMedico( medico: Medico ) {
     let url = URL_SERVICIOS + '/medico';
-    url    += '?token=' + this._usuarioService.token;
-    return this._http.post( url , {medico});
+  
+    if ( medico._id ) {
+      // actualizando
+      url    += '/' + medico._id;
+      url    += '?token=' + this._usuarioService.token;
+      return this._http.put( url, medico)
+        .pipe(
+          map( (resp: any) => {
+            swal('Médico actualizado', medico.nombre, 'success');
+            return resp.medico;
+          })
+        )
+    } else{
+      // creando
+      url    += '?token=' + this._usuarioService.token;
+      return this._http.post( url , medico)
+      .pipe(
+        map( (resp:any) => {
+          swal('Médico creado', medico.nombre, 'success');
+          return resp.medico;
+        })
+      )
+    }
+
+  }
+
+  public cargarMedico( id: string ) {
+    let url = URL_SERVICIOS + '/medico/' + id;
+    return this._http.get( url )
+      .pipe(
+        map( (resp: any ) => {
+          console.log(resp.medico);
+          return resp.medico;
+
+        } ),
+      );
   }
 }

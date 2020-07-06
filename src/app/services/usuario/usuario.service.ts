@@ -25,6 +25,7 @@ export class UsuarioService {
   }
 
   estaLogueado() {
+    console.log(this.token);
     return ( this.token.length > 5) ? true : false;
   }
 
